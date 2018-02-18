@@ -35,7 +35,13 @@ read:
 
   jc read
 
+  mov dx, 0x3F2
+  xor al, al
+  out dx, al
+
   cli
+  mov al, 0xFF
+  out 0xA1, al
 
   lgdt[gdtr]
 
