@@ -1,13 +1,13 @@
 [org 0]
 [bits 16]
 
-start:
-  mov ax, cs
-  mov ds, ax
+start:                        ; this address 0x10000 (0x1000:0000)
+  mov ax, cs                  ; 0x1000 in cs
+  mov ds, ax                  ; set value
   xor ax, ax
   mov ss, ax
 
-  lea esi, [msgKernel]
+  lea esi, [msgKernel]        ; address copy
   mov ax, 0xB800
   mov es, ax
   mov edi, 0
@@ -16,12 +16,12 @@ start:
   jmp $
 
 printf:
-  push eax
+  push eax                    ; push to stack
 
 printf_loop:
   mov al, byte [esi]
   mov byte [es:edi], al
-  or al, al
+  or al, al                   ; when al value is 0, jump to printf_end
   jz printf_end
   inc edi
   mov byte [es:edi], 0x06
