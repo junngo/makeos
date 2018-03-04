@@ -13,7 +13,7 @@ start:
 	mov cx, 0x7FF
 
 paint:
-	mov word [es:di], ax				;	[0XB800:0]	= ax
+	mov word [es:di], ax				;	[0XB800:0] = ax
 	add di, 2
 	dec cx
 	jnz paint										; zero flag check
@@ -45,7 +45,7 @@ paint:
 
 	jmp $
 
-msgBack db '.', 0x67					; letter('.'), color(bg(brown), letter(white))
+msgBack db '.', 0x67					; letter('.'), color(bg(brown) / letter(white))
 
 times 510-($-$$) db 0
 dw 0xAA55											; MBR check
