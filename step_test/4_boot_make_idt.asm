@@ -35,25 +35,25 @@ read:
 
   jc read
 
-  mov dx, 0x3F2
-  xor al, al
+  mov dx, 0x3F2               ; After kernel program copy to RAM and
+  xor al, al                  ; turn off floppy
   out dx, al
 
-  cli
+  cli                         ; block interrupt
   mov al, 0xFF
   out 0xA1, al
 
-  lgdt[gdtr]
+  lgdt[gdtr]                  ; register gdt so that cpu is known
 
   mov eax, cr0
-  or eax, 0x00000001
-  mov cr0, eax
+  or eax, 0x00000001          ; PE bit set
+  mov cr0, eax                ; Now, Protected Mode
 
   jmp $+2
   nop
   nop
 
-  mov bx, SysDataSelector
+  mov bx, SysDataSelector     ; SysDataSelector(0x10)
   mov ds, bx
   mov es, bx
   mov fs, bx
@@ -70,10 +70,10 @@ gdtr:
   dd gdt+0x7C00
 
 gdt:
-  dd 0, 0
-  dd 0x0000FFFF, 0x00CF9A00
-  dd 0x0000FFFF, 0x00CF9200
-  dd 0x8000FFFF, 0x0040920B
+  dd 0, 0                     ; NULL descriptor
+  dd 0x0000FFFF, 0x00CF9A00   ; SysCodeSelector
+  dd 0x0000FFFF, 0x00CF9200   ; SysDataSelector
+  dd 0x8000FFFF, 0x0040920B   ; VideoSelector
 
 gdt_end:
 

@@ -12,23 +12,23 @@ start:                        ; this address 0x10000 (0x1000:0000)
   lgdt[gdtr]                  ; register gdt so that cpu is known
 
   mov eax, cr0
-  or eax, 0x00000001
-  mov cr0, eax
+  or eax, 0x00000001          ; PE bit set
+  mov cr0, eax                ; Now, Protected Mode
 
-  jmp $+2
+  jmp $+2                     ; because of pipline(Real Mode is not)
   nop
   nop
 
-  db 0x66
-  db 0x67
-  db 0xEA
-  dd PM_Start
-  dw SysCodeSelector
+  db 0x66                     ; use the 32bit operand at 16bits mode
+  db 0x67                     ; use the 32bit addr at 16bits mode
+  db 0xEA                     ; jmp
+  dd PM_Start                 : EIP register = PM_Start addr
+  dw SysCodeSelector          ; CS register = SysCodeSelector(0x08)
 
 ;+++++ start protected mode +++++
 [bits 32]
 PM_Start:
-  mov bx, SysDataSelector
+  mov bx, SysDataSelector   ; init again
   mov ds, bx                ; put value(0x10) to segment selector
   mov es, bx
   mov fs, bx
@@ -37,7 +37,7 @@ PM_Start:
 
   xor eax, eax
   mov ax , VideoSelector
-  mov es, ax                ; put value to segment selector
+  mov es , ax               ; put value to segment selector
   mov edi, 80*2*10+2*10
   lea esi, [ds:msgPMode]
   call printf

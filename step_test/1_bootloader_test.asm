@@ -45,7 +45,7 @@ paint:
 
 	jmp $
 
-msgBack db '.', 0x67				; letter('.'), color(bg(brown) / letter(white))
+msgBack db '.', 0x67				; letter('.'), color(bg-brown / letter-white)
 
 times 510-($-$$) db 0
 dw 0xAA55					; MBR check
