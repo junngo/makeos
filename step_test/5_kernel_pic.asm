@@ -11,19 +11,19 @@ PM_Start:
   mov gs, bx
   mov ss, bx
 
-  lea esp, [PM_Start]
+  lea esp, [PM_Start]       ; stack pointer init
 
   mov edi, 0
   lea esi, [msgPMode]
   call printf
 
   cld
-  mov ax, SysDataSelector
+  mov ax, SysDataSelector   ; es SysDataSelector
   mov es, ax
   xor eax, eax
   xor ecx, ecx
-  mov ax, 256
-  mov edi, 0
+  mov ax, 256               ; copy 256 descriptor to IDT region
+  mov edi, 0                ; physical 0 to copy descriptor
 
 loop_idt:
   lea esi, [idt_ignore]
@@ -32,7 +32,7 @@ loop_idt:
   dec ax
   jnz loop_idt
 
-  mov edi, 8*0x20
+  mov edi, 8*0x20           ; Timer is IRQ 0.
   lea esi, [idt_timer]
   mov cx, 8
   rep movsb

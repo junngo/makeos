@@ -48,7 +48,7 @@ read:
   cli
 
   ; ICW 1
-  mov al, 0x11      ; PIC init
+  mov al, 0x11      ; PIC init (LTIM:1, IC4:1)
   out 0x20, al      ; master PIC
   dw 0x00eb, 0x00eb ; jmp$+2, jmp$+2
   out 0xA0, al      ; slave PIC
